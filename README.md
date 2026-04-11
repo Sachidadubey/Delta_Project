@@ -44,9 +44,7 @@ Wanderlust is a full-stack web application that allows users to discover travel 
 - Users select **check-in / check-out dates**; nights and total price auto-calculated
 - **Razorpay** order created server-side → Razorpay checkout popup triggered on frontend
 - Payment verified server-side using **HMAC-SHA256 signature**:
-  ```
-  expectedSignature = HMAC(razorpay_secret, order_id|payment_id)
-  ```
+
 - Booking status transitions: `pending → confirmed` (on success) or `failed` (on mismatch)
 - Full **My Bookings** dashboard with booking history
 
@@ -67,44 +65,51 @@ Wanderlust is a full-stack web application that allows users to discover travel 
 - Only authenticated users can post; only authors can delete
 - Populated and displayed with listing detail
 
-### 🛡️ Security
+### 🛡️ Admin Dashboard
+
+- Role-based access control — `admin` vs `user` roles on User model
+- Dedicated `/admin` route protected by `isAdmin` middleware
+- Live stats — total users, listings, bookings, confirmed/pending counts and revenue
+- Recent users table with one-click delete (admins protected from deletion)
+- Recent listings table with one-click delete
+- Recent bookings overview with status pills
+- Admin link auto-appears in navbar only for admin accounts
+
+### 🔒 Security
 
 - **Helmet.js** with Content Security Policy (CSP) — protects against XSS and malicious scripts
 - `isOwner` middleware prevents unauthorized edits/deletes
+- `isAdmin` middleware — role check on every admin route
 - `validateListing` middleware with **Joi** schema validation on all inputs
 
 ---
 
 ## 🏗️ Architecture
 
-```
 Client (EJS + Vanilla JS)
-         ↓
-  Routes (Express Router)
-         ↓
+↓
+Routes (Express Router)
+↓
 Controllers (Business Logic)
-         ↓
-   Models (Mongoose)
-         ↓
-  Database (MongoDB Atlas)
-```
+↓
+Models (Mongoose)
+↓
+Database (MongoDB Atlas)
 
 ### Folder Structure
 
-```
 wanderlust/
-├── controllers/        # Route handlers — listings, users, bookings, reviews
-├── models/             # Mongoose schemas — Listing, User, Booking, Review
-├── routes/             # Express routers
-├── views/              # EJS templates
-│   └── layouts/        # Base layout with nav, flash messages
-├── public/             # Static assets (CSS, JS, icons)
-├── utils/              # Error handler, wrapAsync, email helper
-├── middleware.js        # isLoggedIn, isOwner, validateListing
-├── cloudConfig.js      # Cloudinary + Multer setup
-├── app.js              # Express app config, middleware stack
-└── .env                # Environment secrets (never committed)
-```
+├── controllers/ # Route handlers — listings, users, bookings, reviews, admin
+├── models/ # Mongoose schemas — Listing, User, Booking, Review
+├── routes/ # Express routers
+├── views/ # EJS templates
+│ └── layouts/ # Base layout with nav, flash messages
+├── public/ # Static assets (CSS, JS, icons)
+├── utils/ # Error handler, wrapAsync, email helper
+├── middleware.js # isLoggedIn, isOwner, isAdmin, validateListing
+├── cloudConfig.js # Cloudinary + Multer setup
+├── app.js # Express app config, middleware stack
+└── .env # Environment secrets (never committed)
 
 ---
 
@@ -112,39 +117,35 @@ wanderlust/
 
 ### Payment Flow (Razorpay Integration)
 
-```
 User clicks "Book & Pay"
-        ↓
+↓
 POST /listings/:id/create-order
-        ↓
+↓
 Backend: calculate nights × price → razorpay.orders.create()
-        ↓
+↓
 Booking saved to DB (status: pending)
-        ↓
+↓
 Razorpay checkout popup (frontend)
-        ↓
+↓
 User completes payment
-        ↓
+↓
 POST /bookings/verify-payment
-        ↓
+↓
 HMAC signature verification (server-side)
-        ↓
+↓
 Booking status → "confirmed" + paymentId saved
-        ↓
+↓
 Confirmation email sent → Redirect /my-bookings
-```
 
 ### Auth Flow (Passport.js)
 
-```
 POST /users/signup
-        ↓
+↓
 User.register() → password auto-hashed (passport-local-mongoose)
-        ↓
+↓
 req.login() → session created → stored in MongoDB
-        ↓
+↓
 Welcome email triggered → Redirect
-```
 
 ---
 
@@ -251,6 +252,14 @@ App runs at: `http://localhost:8080`
 | GET/POST | `/users/login`  | Login       |
 | GET      | `/users/logout` | Logout      |
 
+### Admin
+
+| Method | Route                 | Description               | Auth Required |
+| ------ | --------------------- | ------------------------- | ------------- |
+| GET    | `/admin`              | Dashboard with live stats | ✅ Admin only |
+| DELETE | `/admin/users/:id`    | Delete a user             | ✅ Admin only |
+| DELETE | `/admin/listings/:id` | Delete any listing        | ✅ Admin only |
+
 ---
 
 ## 🚀 Deployment
@@ -267,6 +276,7 @@ Deployed on **Render** (web service).
 
 - **HMAC signature verification** for Razorpay — payments cannot be spoofed
 - **GeoJSON storage** (`listing.geometry`) for Mapbox coordinate rendering
+- **Role-based access control** — `isAdmin` middleware guards all admin routes server-side
 - **Session vs Flash** — flash used for standard redirects; `req.session` used for Razorpay's async JSON flow where flash doesn't persist across the redirect chain
 - **MongoStore sessions** — ensures auth state survives server restarts (critical for production)
 - **MVC separation** — controllers hold zero DB logic (delegated to service/model layer)
@@ -279,16 +289,19 @@ Deployed on **Render** (web service).
 - [ ] Pagination for listings
 - [ ] Price range + sorting filters
 - [ ] Wishlist / Save listing feature
-- [ ] Host dashboard with booking analytics
+- [ ] Admin analytics charts (revenue over time, booking trends)
+- [ ] Bulk delete and export for admin
 - [ ] Mobile-first UI polish
 
 ---
 
 ## 👨‍💻 Author
 
-**Sachida dhar Dubey**  
-Final Year B.Tech CSE | Aspiring Backend Developer  
+**Sachida dhar dubey**
+Final Year B.Tech CSE | Aspiring Backend Developer
 📍 India | Open to Backend / MERN Stack roles
+
+Built end-to-end — from schema design to payment integration to admin tooling.
 
 ---
 
