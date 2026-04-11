@@ -1,0 +1,228 @@
+<style>
+  .wl-navbar {
+    height: 72px;
+    background: white !important;
+    border-bottom: 1px solid #ebebeb !important;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  .wl-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fe424d !important;
+  }
+
+  .wl-brand i {
+    font-size: 1.6rem;
+    color: #fe424d;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s;
+  }
+
+  .search-form:focus-within {
+    box-shadow: 0 2px 14px rgba(254, 66, 77, 0.18);
+    border-color: #fe424d;
+  }
+
+  .search-inp {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 9px 16px !important;
+    font-size: 14px !important;
+    border-radius: 0 !important;
+    min-width: 200px;
+    background: transparent;
+  }
+
+  .search-btn {
+    background: #fe424d !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0 40px 40px 0 !important;
+    padding: 9px 18px !important;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+  }
+
+  .search-btn:hover {
+    background: #e0333e !important;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-link-item {
+    text-decoration: none;
+    color: #222 !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 20px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-link-item:hover {
+    background: #f5f5f5;
+    color: #222 !important;
+  }
+
+  .nav-btn-outline {
+    text-decoration: none;
+    color: #222 !important;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn-outline:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+  }
+
+  .nav-btn-filled {
+    text-decoration: none;
+    color: white !important;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: #222;
+    border: 1px solid #222;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn-filled:hover {
+    background: #444;
+    border-color: #444;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fe424d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+
+  .user-avatar:hover {
+    opacity: 0.85;
+  }
+
+  .logout-btn {
+    text-decoration: none;
+    color: #888 !important;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .logout-btn:hover {
+    background: #f5f5f5;
+    color: #222 !important;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .search-form {
+      display: none;
+    }
+
+    .wl-navbar {
+      padding: 0 1rem;
+    }
+  }
+</style>
+
+<nav class="navbar wl-navbar navbar-expand-md">
+  <div class="container-fluid d-flex align-items-center gap-3">
+
+    <!-- BRAND -->
+    <a href="/listings" class="wl-brand" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home">
+      <i class="fa-regular fa-compass"></i>
+      WanderLust
+    </a>
+
+    <!-- SEARCH — CENTER -->
+    <div class="flex-grow-1 d-flex justify-content-center">
+      <form class="search-form" role="search" action="/listings" method="GET">
+        <input class="form-control search-inp" type="search" name="search" placeholder="Search destination..." />
+        <button class="btn search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+      </form>
+    </div>
+<!-- RIGHT LINKS -->
+<div class="nav-right">
+
+  <a href="/listings/new" class="nav-link-item d-none d-md-block">
+    <i class="fa-solid fa-plus me-1" style="font-size:11px;"></i>Add Listing
+  </a>
+
+  <% if(!currUser) { %>
+    <a href="/users/signup" class="nav-btn-outline">Sign up</a>
+    <a href="/users/login" class="nav-btn-filled">Log in</a>
+    <% } else { %>
+
+      <%# Admin link YAHAN aana chahiye — logged in block mein %>
+        <% if(currUser.role==='admin' ) { %>
+          <a href="/admin" class="nav-link-item" style="color:#fe424d !important;">
+            <i class="fa-solid fa-gauge me-1" style="font-size:11px;"></i>Admin
+          </a>
+          <% } %>
+
+            <a href="/users/my-profile" class="user-avatar" data-bs-toggle="tooltip" data-bs-placement="bottom"
+              title="My Profile">
+              <%= currUser.username[0].toUpperCase() %>
+            </a>
+            <a href="/users/logout" class="logout-btn" data-bs-toggle="tooltip" data-bs-placement="bottom"
+              title="Logout">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+            <% } %>
+
+</div>
+
+  </div>
+</nav>

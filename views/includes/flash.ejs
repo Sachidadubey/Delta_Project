@@ -1,0 +1,53 @@
+<% if(success && success.length){ %>
+  <div class="wl-flash wl-flash-success alert-dismissible fade show" role="alert">
+    <i class="fa-solid fa-circle-check"></i>
+    <%= success %>
+      <button type="button" class="btn-close btn-close-sm ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <% } %>
+
+    <% if(error && error.length){ %>
+      <div class="wl-flash wl-flash-error alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <%= error %>
+          <button type="button" class="btn-close btn-close-sm ms-auto" data-bs-dismiss="alert"
+            aria-label="Close"></button>
+      </div>
+      <% } %>
+
+        <style>
+          .wl-flash {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 1rem 0 0.5rem 0;
+            border: none;
+          }
+
+          .wl-flash i {
+            font-size: 15px;
+            flex-shrink: 0;
+          }
+
+          .wl-flash-success {
+            background: #e6f9f0;
+            color: #1a7a4a;
+          }
+
+          .wl-flash-success i {
+            color: #1a7a4a;
+          }
+
+          .wl-flash-error {
+            background: #fff0f0;
+            color: #c0392b;
+          }
+
+          .wl-flash-error i {
+            color: #c0392b;
+          }
+        </style>

@@ -1,0 +1,221 @@
+<% layout("/layouts/boilerplate") %>
+
+  <style>
+    .auth-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .auth-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-logo i {
+      color: #fe424d;
+      font-size: 1.8rem;
+    }
+
+    .auth-logo span {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .auth-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #222;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .auth-sub {
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      border-radius: 10px !important;
+      border: 1px solid #e0e0e0 !important;
+      padding: 11px 14px !important;
+      font-size: 14px;
+      background: #fafafa;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: #fe424d !important;
+      box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1) !important;
+      background: white;
+      outline: none;
+    }
+
+    .valid-feedback {
+      font-size: 12px;
+    }
+
+    .auth-btn {
+      width: 100%;
+      background: #fe424d !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px !important;
+      padding: 12px !important;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .auth-btn:hover {
+      background: #e0333e !important;
+      transform: scale(1.01);
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1.2rem 0;
+      color: #ccc;
+      font-size: 12px;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ebebeb;
+    }
+
+    .auth-footer {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-top: 1.2rem;
+    }
+
+    .auth-footer a {
+      color: #fe424d;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .input-icon-wrap {
+      position: relative;
+    }
+
+    .input-icon-wrap i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bbb;
+      font-size: 13px;
+      z-index: 2;
+    }
+
+    .input-icon-wrap .form-control {
+      padding-left: 36px !important;
+    }
+
+    .terms-note {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+  </style>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <i class="fa-regular fa-compass"></i>
+        <span>WanderLust</span>
+      </div>
+
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Join thousands of travelers on WanderLust</div>
+
+      <form action="/users/signup" method="POST" class="needs-validation" novalidate>
+
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-user"></i>
+            <input name="username" type="text" class="form-control" placeholder="Choose a username" required />
+          </div>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-envelope"></i>
+            <input name="email" type="email" class="form-control" placeholder="your@email.com" required />
+          </div>
+          <div class="invalid-feedback">Please enter a valid email</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input name="password" type="password" class="form-control" placeholder="Create a strong password"
+              required />
+          </div>
+          <div class="invalid-feedback">Please enter a password</div>
+        </div>
+
+        <button class="btn auth-btn">
+          <i class="fa-solid fa-user-plus me-2"></i> Create Account
+        </button>
+
+        <p class="terms-note">
+          By signing up, you agree to our Terms of Service and Privacy Policy
+        </p>
+
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <div class="auth-footer">
+        Already have an account?
+        <a href="/users/login">Log in</a>
+      </div>
+
+    </div>
+  </div>

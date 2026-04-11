@@ -1,0 +1,637 @@
+<% layout("/layouts/boilerplate") %>
+
+  <script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <% - JSON.stringify(listing) %>;
+  </script>
+
+  <style>
+    .show-wrapper {
+      max-width: 900px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .show-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+    }
+
+    .show-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .show-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .show-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 1.5rem;
+    }
+
+    .show-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* LEFT COLUMN */
+    .show-left {}
+
+    .owner-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 0;
+      border-top: 1px solid #ebebeb;
+      border-bottom: 1px solid #ebebeb;
+      margin-bottom: 1.2rem;
+    }
+
+    .owner-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fe424d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .owner-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: #222;
+    }
+
+    .owner-sub {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .show-description {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .show-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-chip {
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .detail-chip i {
+      color: #fe424d;
+      font-size: 14px;
+      width: 16px;
+    }
+
+    .owner-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-edit {
+      background: #222 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px !important;
+      padding: 9px 22px !important;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-edit:hover {
+      background: #444 !important;
+    }
+
+    .btn-delete {
+      background: white !important;
+      color: #e0333e !important;
+      border: 1.5px solid #e0333e !important;
+      border-radius: 10px !important;
+      padding: 9px 22px !important;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-delete:hover {
+      background: #fff5f5 !important;
+    }
+
+    /* MAP */
+    .map-section {
+      margin-bottom: 2rem;
+    }
+
+    .map-section h5 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    #map {
+      height: 320px;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #ebebeb;
+    }
+
+    /* RIGHT COLUMN — BOOKING CARD */
+    .booking-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+      position: sticky;
+      top: 90px;
+    }
+
+    .booking-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1rem;
+    }
+
+    .booking-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: #888;
+    }
+
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .date-field {
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .date-field:first-child {
+      border-right: 1px solid #ddd;
+    }
+
+    .date-field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 2px;
+    }
+
+    .date-field input[type="date"] {
+      border: none !important;
+      padding: 0 !important;
+      font-size: 13px;
+      font-weight: 500;
+      color: #222;
+      background: transparent;
+      width: 100%;
+      outline: none;
+      box-shadow: none !important;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #fe424d, #e0333e) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 12px !important;
+      padding: 14px !important;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 4px;
+    }
+
+    .pay-btn:hover {
+      opacity: 0.92;
+      transform: scale(1.01);
+    }
+
+    .booking-note {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 10px;
+    }
+
+    /* REVIEWS */
+    .reviews-section {
+      margin-top: 2rem;
+    }
+
+    .reviews-section h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1.2rem;
+    }
+
+    .review-form-card {
+      background: #fafafa;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .review-form-card h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #222;
+    }
+
+    .review-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .review-author {
+      font-weight: 700;
+      font-size: 14px;
+      color: #222;
+      margin-bottom: 4px;
+    }
+
+    .review-comment {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .btn-del-review {
+      background: transparent !important;
+      border: 1px solid #ddd !important;
+      border-radius: 8px !important;
+      color: #e0333e !important;
+      font-size: 12px !important;
+      padding: 4px 12px !important;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-del-review:hover {
+      background: #fff5f5 !important;
+    }
+
+    .submit-review-btn {
+      background: #222 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px !important;
+      padding: 10px 24px !important;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .submit-review-btn:hover {
+      background: #444 !important;
+    }
+
+    .category-badge {
+      display: inline-block;
+      background: #fff0f0;
+      color: #fe424d;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .show-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-card {
+        position: static;
+      }
+
+      .show-img {
+        height: 260px;
+      }
+
+      .show-details {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="show-wrapper">
+
+    <!-- TITLE + META -->
+    <div class="show-title">
+      <%= listing.title %>
+    </div>
+    <div class="show-meta">
+      <% if(listing.category) { %>
+        <span class="category-badge">
+          <%= listing.category %>
+        </span>
+        <% } %>
+          <span><i class="fa-solid fa-location-dot" style="color:#fe424d;"></i>
+            <%= listing.location %>, <%= listing.country %>
+          </span>
+    </div>
+
+    <!-- HERO IMAGE -->
+    <img src="<%= listing.image.url %>" class="show-img" alt="<%= listing.title %>" />
+
+    <!-- TWO COLUMN LAYOUT -->
+    <div class="show-grid">
+
+      <!-- LEFT -->
+      <div class="show-left">
+
+        <!-- OWNER -->
+        <div class="owner-bar">
+          <div class="owner-avatar">
+            <%= listing.owner ? listing.owner.username[0].toUpperCase() : "?" %>
+          </div>
+          <div>
+            <div class="owner-name">Hosted by <%= listing.owner ? listing.owner.username : "Unknown" %>
+            </div>
+            <div class="owner-sub">WanderLust Host</div>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <p class="show-description">
+          <%= listing.description %>
+        </p>
+
+        <!-- DETAIL CHIPS -->
+        <div class="show-details">
+          <div class="detail-chip">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            ₹<%= listing.price.toLocaleString("en-IN") %> / night
+          </div>
+          <div class="detail-chip">
+            <i class="fa-solid fa-location-dot"></i>
+            <%= listing.location %>
+          </div>
+          <div class="detail-chip">
+            <i class="fa-solid fa-globe"></i>
+            <%= listing.country %>
+          </div>
+          <% if(listing.category) { %>
+            <div class="detail-chip">
+              <i class="fa-solid fa-tag"></i>
+              <%= listing.category %>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- OWNER ACTIONS -->
+        <% if(currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
+          <div class="owner-actions">
+            <a href="/listings/<%= listing._id %>/edit" class="btn-edit">
+              <i class="fa-solid fa-pen"></i> Edit
+            </a>
+            <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+              <button class="btn-delete">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </form>
+          </div>
+          <% } %>
+
+            <!-- MAP -->
+            <div class="map-section">
+              <h5><i class="fa-solid fa-map-pin me-2" style="color:#fe424d;"></i>Where you'll be</h5>
+              <div id="map"></div>
+            </div>
+
+            <!-- REVIEWS -->
+            <div class="reviews-section">
+
+              <!-- REVIEW FORM -->
+              <% if(currUser) { %>
+                <div class="review-form-card">
+                  <h5>Leave a Review</h5>
+                  <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
+
+                    <div class="mb-3">
+                      <label class="form-label" style="font-size:13px; font-weight:600;">Rating</label>
+                      <fieldset class="starability-slot">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                          aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" /><label for="first-rate1"
+                          title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" /><label for="first-rate2"
+                          title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" /><label for="first-rate3"
+                          title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" /><label for="first-rate4"
+                          title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" /><label for="first-rate5"
+                          title="Amazing">5 stars</label>
+                      </fieldset>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label" style="font-size:13px; font-weight:600;">Comment</label>
+                      <textarea name="review[comment]" rows="4" class="form-control"
+                        placeholder="Share your experience..." required></textarea>
+                      <div class="invalid-feedback">Please add a comment</div>
+                    </div>
+
+                    <button class="submit-review-btn">
+                      <i class="fa-solid fa-paper-plane me-1"></i> Submit Review
+                    </button>
+
+                  </form>
+                </div>
+                <% } %>
+
+                  <!-- ALL REVIEWS -->
+                  <% if(listing.reviews.length> 0) { %>
+                    <h4>Guest Reviews (<%= listing.reviews.length %>)</h4>
+                    <% for(review of listing.reviews) { %>
+                      <div class="review-card">
+                        <div class="review-author">
+                          <i class="fa-solid fa-circle-user me-1" style="color:#fe424d;"></i>
+                          @<%= review.author.username %>
+                        </div>
+                        <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                        <p class="review-comment">
+                          <%= review.comment %>
+                        </p>
+                        <% if(currUser && review.author._id.equals(currUser._id)) { %>
+                          <form method="POST"
+                            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                            <button class="btn-del-review">
+                              <i class="fa-solid fa-trash me-1"></i> Delete
+                            </button>
+                          </form>
+                          <% } %>
+                      </div>
+                      <% } %>
+                        <% } %>
+
+            </div>
+      </div>
+
+      <!-- RIGHT — BOOKING CARD -->
+      <div>
+        <div class="booking-card">
+          <div class="booking-price">
+            ₹<%= listing.price.toLocaleString("en-IN") %>
+              <span>/ night</span>
+          </div>
+
+          <div class="date-row">
+            <div class="date-field">
+              <label>Check-in</label>
+              <input type="date" id="checkIn" />
+            </div>
+            <div class="date-field">
+              <label>Check-out</label>
+              <input type="date" id="checkOut" />
+            </div>
+          </div>
+
+          <button class="btn pay-btn" id="pay-btn">
+            <i class="fa-solid fa-lock me-2"></i> Reserve Now
+          </button>
+
+          <p class="booking-note">You won't be charged yet</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RAZORPAY -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("pay-btn").onclick = async () => {
+        try {
+          const checkIn = document.getElementById("checkIn").value;
+          const checkOut = document.getElementById("checkOut").value;
+
+          if (!checkIn || !checkOut) {
+            alert("Please select check-in and check-out dates");
+            return;
+          }
+
+          const res = await fetch(`/listings/${listing._id}/create-order`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ checkIn, checkOut }),
+          });
+
+          const data = await res.json();
+
+          if (!data.keyId) {
+            alert("Payment setup failed. Please try again.");
+            return;
+          }
+
+          const rzp = new Razorpay({
+            key: data.keyId,
+            amount: data.amount,
+            currency: data.currency,
+            order_id: data.orderId,
+            name: "WanderLust",
+            description: data.listing.title,
+            prefill: {
+              name: data.user.name,
+              email: data.user.email,
+            },
+            theme: { color: "#fe424d" },
+
+            handler: async function (response) {
+              const verifyRes = await fetch("/bookings/verify-payment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  bookingId: data.bookingId,
+                }),
+              });
+
+              const result = await verifyRes.json();
+              if (result.success) {
+                window.location.href = "/bookings/my-bookings";
+              } else {
+                alert("Payment verification failed");
+              }
+            },
+          });
+
+          rzp.on("payment.failed", () => alert("Payment failed. Please try again."));
+          rzp.open();
+
+        } catch (err) {
+          console.error(err);
+          alert("Something went wrong. Please try again.");
+        }
+      };
+    });
+  </script>
+
+  <script src="/js/map.js"></script>

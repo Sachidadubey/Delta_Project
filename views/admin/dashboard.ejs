@@ -1,0 +1,415 @@
+<% layout("/layouts/boilerplate") %>
+
+  <style>
+    .admin-wrapper {
+      max-width: 1100px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-header h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #222;
+      margin: 0;
+    }
+
+    .admin-badge {
+      background: #fff0f0;
+      color: #fe424d;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* STAT CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #222;
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* SECTION */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: #fe424d;
+    }
+
+    .admin-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-table th {
+      background: #fafafa;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #888;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .admin-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #333;
+      vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: #fafafa;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mini-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fe424d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .status-pill {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pill-confirmed {
+      background: #e6f9f0;
+      color: #1a7a4a;
+    }
+
+    .pill-pending {
+      background: #fff8e0;
+      color: #9a6c00;
+    }
+
+    .del-btn {
+      background: transparent;
+      border: 1px solid #ffcdd2;
+      color: #e53935;
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .del-btn:hover {
+      background: #fff5f5;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+
+  <div class="admin-wrapper">
+
+    <!-- HEADER -->
+    <div class="admin-header">
+      <div>
+        <h2><i class="fa-solid fa-gauge me-2" style="color:#fe424d;"></i>Admin Dashboard</h2>
+      </div>
+      <span class="admin-badge">
+        <i class="fa-solid fa-shield-halved me-1"></i> Admin Access
+      </span>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fff0f0;">
+          <i class="fa-solid fa-users" style="color:#fe424d;"></i>
+        </div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value">
+          <%= stats.totalUsers %>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#e8f5e9;">
+          <i class="fa-solid fa-house" style="color:#2e7d32;"></i>
+        </div>
+        <div class="stat-label">Total Listings</div>
+        <div class="stat-value">
+          <%= stats.totalListings %>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#e3f2fd;">
+          <i class="fa-solid fa-calendar-check" style="color:#1565c0;"></i>
+        </div>
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-value">
+          <%= stats.totalBookings %>
+        </div>
+        <div class="stat-sub">
+          <%= stats.confirmedBookings %> confirmed · <%= stats.pendingBookings %> pending
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#f3e5f5;">
+          <i class="fa-solid fa-indian-rupee-sign" style="color:#6a1b9a;"></i>
+        </div>
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">₹<%= stats.totalRevenue.toLocaleString("en-IN") %>
+        </div>
+        <div class="stat-sub">From confirmed bookings</div>
+      </div>
+
+    </div>
+
+    <!-- TWO COLUMN -->
+    <div class="two-col">
+
+      <!-- RECENT USERS -->
+      <div>
+        <div class="section-title">
+          <i class="fa-solid fa-user-clock"></i> Recent Users
+        </div>
+        <div class="admin-card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentUsers.forEach(u=> { %>
+                <tr>
+                  <td>
+                    <div class="user-chip">
+                      <div class="mini-avatar">
+                        <%= u.username[0].toUpperCase() %>
+                      </div>
+                      <div>
+                        <div style="font-weight:600;">@<%= u.username %>
+                        </div>
+                        <div style="font-size:11px; color:#aaa;">
+                          <%= u.email %>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="status-pill <%= u.role === 'admin' ? 'pill-confirmed' : 'pill-pending' %>">
+                      <%= u.role %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if(u.role !=='admin' ) { %>
+                      <form method="POST" action="/admin/users/<%= u._id %>?_method=DELETE"
+                        onsubmit="return confirm('Delete this user?')">
+                        <button class="del-btn">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </form>
+                      <% } %>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RECENT LISTINGS -->
+      <div>
+        <div class="section-title">
+          <i class="fa-solid fa-house-circle-check"></i> Recent Listings
+        </div>
+        <div class="admin-card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Owner</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentListings.forEach(l=> { %>
+                <tr>
+                  <td>
+                    <div
+                      style="font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                      <%= l.title %>
+                    </div>
+                    <div style="font-size:11px; color:#aaa;">₹<%= l.price.toLocaleString("en-IN") %>/night</div>
+                  </td>
+                  <td>@<%= l.owner?.username || "N/A" %>
+                  </td>
+                  <td>
+                    <form method="POST" action="/admin/listings/<%= l._id %>?_method=DELETE"
+                      onsubmit="return confirm('Delete this listing?')">
+                      <button class="del-btn">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RECENT BOOKINGS -->
+    <div class="section-title">
+      <i class="fa-solid fa-receipt"></i> Recent Bookings
+    </div>
+    <div class="admin-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Listing</th>
+            <th>Dates</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentBookings.forEach(b=> { %>
+            <tr>
+              <td>@<%= b.user?.username || "N/A" %>
+              </td>
+              <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                <%= b.listing?.title || "N/A" %>
+              </td>
+              <td style="font-size:12px; color:#888;">
+                <%= b.checkIn.toLocaleDateString("en-IN", {day:"numeric", month:"short"}) %>
+                  →
+                  <%= b.checkOut.toLocaleDateString("en-IN", {day:"numeric", month:"short"}) %>
+              </td>
+              <td style="font-weight:600;">₹<%= b.totalAmount.toLocaleString("en-IN") %>
+              </td>
+              <td>
+                <span class="status-pill <%= b.status === 'confirmed' ? 'pill-confirmed' : 'pill-pending' %>">
+                  <%= b.status %>
+                </span>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>

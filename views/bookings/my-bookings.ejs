@@ -1,0 +1,45 @@
+<% layout("/layouts/boilerplate") %>
+<h2 class="text-center mt-3">My Bookings</h2>
+
+<div class="row">
+  <div class="col-10 offset-1">
+
+    <% if(bookings.length===0){ %>
+      <div class="alert alert-info text-center">
+        No bookings yet 😕
+      </div>
+      <% } %>
+
+        <% bookings.forEach(booking=> { %>
+          <div class="card mb-3 shadow-sm p-3">
+
+            <h5>
+              <%= booking.listing.title %>
+            </h5>
+
+            <p>
+              📍 <%= booking.listing.location %>
+            </p>
+
+            <p>
+              📅 <%= booking.checkIn.toDateString() %> →
+                <%= booking.checkOut.toDateString() %>
+            </p>
+
+            <p>
+              💰 ₹ <%= booking.totalAmount %>
+            </p>
+
+            <p>
+              Status:
+              <span class="badge 
+            <%= booking.status === 'confirmed' ? 'bg-success' : 'bg-danger' %>">
+                <%= booking.status %>
+              </span>
+            </p>
+
+          </div>
+          <% }) %>
+
+  </div>
+</div>

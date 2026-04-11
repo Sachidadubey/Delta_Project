@@ -1,0 +1,415 @@
+<% layout("/layouts/boilerplate") %>
+
+  <style>
+    .profile-wrapper {
+      max-width: 780px;
+      margin: 2.5rem auto 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fe424d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .profile-header-info h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      margin: 0 0 2px 0;
+    }
+
+    .profile-header-info p {
+      font-size: 13px;
+      color: #888;
+      margin: 0;
+    }
+
+    /* TAB BUTTONS */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #ebebeb;
+      padding-bottom: 0;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      color: #222;
+    }
+
+    .tab-btn.active {
+      color: #222;
+      border-bottom-color: #222;
+    }
+
+    /* CARDS */
+    .profile-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+    }
+
+    /* INFO SECTION */
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #888;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .info-value {
+      color: #222;
+      font-weight: 500;
+    }
+
+    .info-row i {
+      color: #fe424d;
+      width: 16px;
+      font-size: 13px;
+    }
+
+    /* FORM */
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      border-radius: 10px !important;
+      border: 1px solid #e0e0e0 !important;
+      padding: 10px 14px !important;
+      font-size: 14px;
+      background: #fafafa;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: #fe424d !important;
+      box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1) !important;
+      background: white;
+      outline: none;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #aaa;
+      margin: 1.2rem 0 0.8rem 0;
+    }
+
+    .save-btn {
+      width: 100%;
+      background: #222 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 10px !important;
+      padding: 12px !important;
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .save-btn:hover {
+      background: #444 !important;
+    }
+
+    /* BOOKING CARDS */
+    .booking-item {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: box-shadow 0.2s;
+    }
+
+    .booking-item:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .booking-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #222;
+      margin-bottom: 4px;
+    }
+
+    .booking-dates {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .booking-amount {
+      font-size: 14px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-confirmed {
+      background: #e6f9f0;
+      color: #1a7a4a;
+    }
+
+    .status-pending {
+      background: #fff8e0;
+      color: #9a6c00;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #aaa;
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* SECTION HIDDEN */
+    .tab-section {
+      display: none;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+  </style>
+
+  <div class="profile-wrapper">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <%= user.username[0].toUpperCase() %>
+      </div>
+      <div class="profile-header-info">
+        <h2>
+          <%= user.username %>
+        </h2>
+        <p>WanderLust Member</p>
+      </div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="infoTab" onclick="showTab('info')">
+        <i class="fa-solid fa-user"></i> Profile
+      </button>
+      <button class="tab-btn" id="editTab" onclick="showTab('edit')">
+        <i class="fa-solid fa-pen"></i> Edit Profile
+      </button>
+      <button class="tab-btn" id="bookingTab" onclick="showTab('bookings')">
+        <i class="fa-solid fa-calendar-check"></i> My Bookings
+        <% if(bookings.length> 0) { %>
+          <span style="background:#fe424d; color:white; border-radius:20px;
+                     padding:1px 8px; font-size:11px; margin-left:2px;">
+            <%= bookings.length %>
+          </span>
+          <% } %>
+      </button>
+    </div>
+
+    <!-- TAB: PROFILE INFO -->
+    <div id="tab-info" class="tab-section active">
+      <div class="profile-card">
+        <div class="info-row">
+          <i class="fa-solid fa-user"></i>
+          <span class="info-label">Username</span>
+          <span class="info-value">
+            <%= user.username %>
+          </span>
+        </div>
+        <div class="info-row">
+          <i class="fa-solid fa-envelope"></i>
+          <span class="info-label">Email</span>
+          <span class="info-value">
+            <%= user.email %>
+          </span>
+        </div>
+        <div class="info-row">
+          <i class="fa-solid fa-calendar"></i>
+          <span class="info-label">Joined</span>
+          <span class="info-value">
+            <%= user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN', {year:'numeric', month:'long'})
+              : 'N/A' %>
+          </span>
+        </div>
+        <div class="info-row">
+          <i class="fa-solid fa-bookmark"></i>
+          <span class="info-label">Bookings</span>
+          <span class="info-value">
+            <%= bookings.length %> total
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: EDIT PROFILE -->
+    <div id="tab-edit" class="tab-section">
+      <div class="profile-card">
+        <form action="/users/my-profile" method="POST">
+
+          <div class="section-label">Account Info</div>
+
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" value="<%= user.username %>" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" value="<%= user.email %>" class="form-control" required />
+          </div>
+
+          <div class="section-label">Change Password <span
+              style="color:#ccc; font-weight:400; text-transform:none;">(optional)</span></div>
+
+          <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input type="password" name="currentPassword" class="form-control" placeholder="Enter current password" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" name="newPassword" class="form-control" placeholder="Enter new password" />
+          </div>
+
+          <button class="btn save-btn">
+            <i class="fa-solid fa-floppy-disk me-2"></i> Save Changes
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB: MY BOOKINGS -->
+    <div id="tab-bookings" class="tab-section">
+
+      <% if(bookings.length===0) { %>
+        <div class="empty-state">
+          <i class="fa-solid fa-calendar-xmark"></i>
+          <h6>No bookings yet</h6>
+          <p style="font-size:13px;">Start exploring and book your first stay!</p>
+          <a href="/listings" class="btn btn-dark mt-2 px-4" style="border-radius:10px;">Browse Listings</a>
+        </div>
+        <% } else { %>
+          <% bookings.forEach(booking=> { %>
+            <div class="booking-item">
+              <div>
+                <div class="booking-title">
+                  <i class="fa-solid fa-compass me-1" style="color:#fe424d; font-size:13px;"></i>
+                  <%= booking.listing.title %>
+                </div>
+                <div class="booking-dates">
+                  <i class="fa-solid fa-calendar" style="font-size:11px;"></i>
+                  <%= booking.checkIn.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}) %>
+                    <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i>
+                    <%= booking.checkOut.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}) %>
+                      · <%= booking.nights %> night<%= booking.nights> 1 ? 's' : '' %>
+                </div>
+                <div class="booking-amount">₹<%= booking.totalAmount.toLocaleString('en-IN') %>
+                </div>
+              </div>
+              <div>
+                <span
+                  class="status-badge <%= booking.status === 'confirmed' ? 'status-confirmed' : 'status-pending' %>">
+                  <% if(booking.status==='confirmed' ) { %>
+                    <i class="fa-solid fa-circle-check me-1" style="font-size:10px;"></i>
+                    <% } else { %>
+                      <i class="fa-solid fa-clock me-1" style="font-size:10px;"></i>
+                      <% } %>
+                        <%= booking.status %>
+                </span>
+              </div>
+            </div>
+            <% }) %>
+              <% } %>
+
+    </div>
+
+  </div>
+
+  <script>
+    function showTab(tab) {
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById(tab + 'Tab').classList.add('active');
+    }
+  </script>
