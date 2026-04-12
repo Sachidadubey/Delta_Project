@@ -280,6 +280,7 @@ module.exports.createOrder = async (req, res) => {
     }
 
     const { checkIn, checkOut } = req.body;
+    console.log(req.body);
 
     // ✅ VALIDATION
     if (!checkIn || !checkOut) {
