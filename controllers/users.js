@@ -75,7 +75,7 @@ module.exports.login = async (req, res) => {
   } catch (err) {
     console.error("Login error:", err);
     req.flash("error", "Login failed");
-    res.redirect("/users/login");
+    res.redirect("/login");
   }
 };
 
