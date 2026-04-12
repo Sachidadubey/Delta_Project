@@ -5,8 +5,9 @@
 ---
 
 ## 🔗 Live Demo
+https://major-project-tt4c.onrender.com
 
-**[wanderlust-demo.onrender.com](https://wanderlust-demo.onrender.com)**
+** https://major-project-tt4c.onrender.com**
 
 > Test credentials — Email: `demo@wanderlust.com` / Password: `demo1234`
 
