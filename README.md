@@ -5,7 +5,6 @@
 ---
 
 ## 🔗 Live Demo
-https://major-project-tt4c.onrender.com
 
 ** https://major-project-tt4c.onrender.com**
 
