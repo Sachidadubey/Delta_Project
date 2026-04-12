@@ -281,6 +281,8 @@ module.exports.createOrder = async (req, res) => {
 
     const { checkIn, checkOut } = req.body;
     console.log(req.body);
+     console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
+  console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
 
     // ✅ VALIDATION
     if (!checkIn || !checkOut) {

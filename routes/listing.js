@@ -27,8 +27,8 @@ router.route("/")
   .get(wrapAsync(listingController.index))
   .post(
     isLoggedIn,
-    upload.single("listing[image]"),  // ✅ pehle multer
-    validateListing,                   // ✅ baad mein validate
+    upload.single("listing[image]"),  // ✅ multer
+    validateListing,                   // mein valida
     wrapAsync(listingController.createListing)
   );
 

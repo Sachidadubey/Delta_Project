@@ -1,9 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 
-  <script>
-    const mapToken = "<%= process.env.MAP_TOKEN %>";
-    const listing = <%- JSON.stringify(listing) %>;
-  </script>
+  <div id="map-data" data-token="<%= process.env.MAP_TOKEN %>" data-listing='<%- JSON.stringify(listing) %>'
+    data-id="<%= listing._id %>">
+  </div>
 
   <style>
     .show-wrapper {
@@ -49,9 +48,6 @@
       gap: 2rem;
       align-items: start;
     }
-
-    /* LEFT COLUMN */
-    .show-left {}
 
     .owner-bar {
       display: flex;
@@ -159,7 +155,6 @@
       background: #fff5f5 !important;
     }
 
-    /* MAP */
     .map-section {
       margin-bottom: 2rem;
     }
@@ -179,7 +174,6 @@
       border: 1px solid #ebebeb;
     }
 
-    /* RIGHT COLUMN — BOOKING CARD */
     .booking-card {
       background: white;
       border: 1px solid #ddd;
@@ -269,7 +263,6 @@
       margin-top: 10px;
     }
 
-    /* REVIEWS */
     .reviews-section {
       margin-top: 2rem;
     }
@@ -379,7 +372,6 @@
 
   <div class="show-wrapper">
 
-    <!-- TITLE + META -->
     <div class="show-title">
       <%= listing.title %>
     </div>
@@ -389,21 +381,18 @@
           <%= listing.category %>
         </span>
         <% } %>
-          <span><i class="fa-solid fa-location-dot" style="color:#fe424d;"></i>
+          <span>
+            <i class="fa-solid fa-location-dot" style="color:#fe424d;"></i>
             <%= listing.location %>, <%= listing.country %>
           </span>
     </div>
 
-    <!-- HERO IMAGE -->
     <img src="<%= listing.image.url %>" class="show-img" alt="<%= listing.title %>" />
 
-    <!-- TWO COLUMN LAYOUT -->
     <div class="show-grid">
 
-      <!-- LEFT -->
       <div class="show-left">
 
-        <!-- OWNER -->
         <div class="owner-bar">
           <div class="owner-avatar">
             <%= listing.owner ? listing.owner.username[0].toUpperCase() : "?" %>
@@ -415,62 +404,45 @@
           </div>
         </div>
 
-        <!-- DESCRIPTION -->
         <p class="show-description">
           <%= listing.description %>
         </p>
 
-        <!-- DETAIL CHIPS -->
         <div class="show-details">
-          <div class="detail-chip">
-            <i class="fa-solid fa-indian-rupee-sign"></i>
-            ₹<%= listing.price.toLocaleString("en-IN") %> / night
-          </div>
-          <div class="detail-chip">
-            <i class="fa-solid fa-location-dot"></i>
+          <div class="detail-chip"><i class="fa-solid fa-indian-rupee-sign"></i>₹<%=
+              listing.price.toLocaleString("en-IN") %> / night</div>
+          <div class="detail-chip"><i class="fa-solid fa-location-dot"></i>
             <%= listing.location %>
           </div>
-          <div class="detail-chip">
-            <i class="fa-solid fa-globe"></i>
+          <div class="detail-chip"><i class="fa-solid fa-globe"></i>
             <%= listing.country %>
           </div>
           <% if(listing.category) { %>
-            <div class="detail-chip">
-              <i class="fa-solid fa-tag"></i>
+            <div class="detail-chip"><i class="fa-solid fa-tag"></i>
               <%= listing.category %>
             </div>
             <% } %>
         </div>
 
-        <!-- OWNER ACTIONS -->
         <% if(currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
           <div class="owner-actions">
-            <a href="/listings/<%= listing._id %>/edit" class="btn-edit">
-              <i class="fa-solid fa-pen"></i> Edit
-            </a>
+            <a href="/listings/<%= listing._id %>/edit" class="btn-edit"><i class="fa-solid fa-pen"></i> Edit</a>
             <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
-              <button class="btn-delete">
-                <i class="fa-solid fa-trash"></i> Delete
-              </button>
+              <button class="btn-delete"><i class="fa-solid fa-trash"></i> Delete</button>
             </form>
           </div>
           <% } %>
 
-            <!-- MAP -->
             <div class="map-section">
               <h5><i class="fa-solid fa-map-pin me-2" style="color:#fe424d;"></i>Where you'll be</h5>
               <div id="map"></div>
             </div>
 
-            <!-- REVIEWS -->
             <div class="reviews-section">
-
-              <!-- REVIEW FORM -->
               <% if(currUser) { %>
                 <div class="review-form-card">
                   <h5>Leave a Review</h5>
                   <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
-
                     <div class="mb-3">
                       <label class="form-label" style="font-size:13px; font-weight:600;">Rating</label>
                       <fieldset class="starability-slot">
@@ -488,30 +460,24 @@
                           title="Amazing">5 stars</label>
                       </fieldset>
                     </div>
-
                     <div class="mb-3">
                       <label class="form-label" style="font-size:13px; font-weight:600;">Comment</label>
                       <textarea name="review[comment]" rows="4" class="form-control"
                         placeholder="Share your experience..." required></textarea>
                       <div class="invalid-feedback">Please add a comment</div>
                     </div>
-
-                    <button class="submit-review-btn">
-                      <i class="fa-solid fa-paper-plane me-1"></i> Submit Review
-                    </button>
-
+                    <button class="submit-review-btn"><i class="fa-solid fa-paper-plane me-1"></i> Submit
+                      Review</button>
                   </form>
                 </div>
                 <% } %>
 
-                  <!-- ALL REVIEWS -->
                   <% if(listing.reviews.length> 0) { %>
                     <h4>Guest Reviews (<%= listing.reviews.length %>)</h4>
                     <% for(review of listing.reviews) { %>
                       <div class="review-card">
-                        <div class="review-author">
-                          <i class="fa-solid fa-circle-user me-1" style="color:#fe424d;"></i>
-                          @<%= review.author.username %>
+                        <div class="review-author"><i class="fa-solid fa-circle-user me-1" style="color:#fe424d;"></i>@
+                          <%= review.author.username %>
                         </div>
                         <p class="starability-result" data-rating="<%= review.rating %>"></p>
                         <p class="review-comment">
@@ -520,26 +486,19 @@
                         <% if(currUser && review.author._id.equals(currUser._id)) { %>
                           <form method="POST"
                             action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                            <button class="btn-del-review">
-                              <i class="fa-solid fa-trash me-1"></i> Delete
-                            </button>
+                            <button class="btn-del-review"><i class="fa-solid fa-trash me-1"></i> Delete</button>
                           </form>
                           <% } %>
                       </div>
                       <% } %>
                         <% } %>
-
             </div>
+
       </div>
 
-      <!-- RIGHT — BOOKING CARD -->
       <div>
         <div class="booking-card">
-          <div class="booking-price">
-            ₹<%= listing.price.toLocaleString("en-IN") %>
-              <span>/ night</span>
-          </div>
-
+          <div class="booking-price">₹<%= listing.price.toLocaleString("en-IN") %><span>/ night</span></div>
           <div class="date-row">
             <div class="date-field">
               <label>Check-in</label>
@@ -550,11 +509,9 @@
               <input type="date" id="checkOut" />
             </div>
           </div>
-
           <button class="btn pay-btn" id="pay-btn">
             <i class="fa-solid fa-lock me-2"></i> Reserve Now
           </button>
-
           <p class="booking-note">You won't be charged yet</p>
         </div>
       </div>
@@ -562,12 +519,22 @@
     </div>
   </div>
 
-  <!-- RAZORPAY -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
+      const listingId = document.getElementById("map-data").dataset.id;
+
       document.getElementById("pay-btn").onclick = async () => {
         try {
+          const isLoggedIn = <%= currUser ? 'true' : 'false' %>;
+          if (!isLoggedIn) {
+            window.location.href = "/users/login";
+            return;
+          }
+
           const checkIn = document.getElementById("checkIn").value;
           const checkOut = document.getElementById("checkOut").value;
 
@@ -576,13 +543,19 @@
             return;
           }
 
-          const res = await fetch(`/listings/${listing._id}/create-order`, {
+          const res = await fetch(`/listings/${listingId}/create-order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ checkIn, checkOut }),
           });
 
           const data = await res.json();
+          console.log("Server response:", data);
+
+          if (data.error) {
+            alert(data.error);
+            return;
+          }
 
           if (!data.keyId) {
             alert("Payment setup failed. Please try again.");
@@ -601,7 +574,6 @@
               email: data.user.email,
             },
             theme: { color: "#fe424d" },
-
             handler: async function (response) {
               const verifyRes = await fetch("/bookings/verify-payment", {
                 method: "POST",
@@ -613,7 +585,6 @@
                   bookingId: data.bookingId,
                 }),
               });
-
               const result = await verifyRes.json();
               if (result.success) {
                 window.location.href = "/bookings/my-bookings";
