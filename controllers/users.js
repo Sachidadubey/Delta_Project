@@ -32,11 +32,9 @@ module.exports.signup = async (req, res, next) => {
       if (err) return next(err);
 
       // ✅ EMAIL (non-blocking safe)
-      try {
-        await sendWelcomeEmail(email, username);
-      } catch (e) {
-        console.error("Signup email failed:", e.message);
-      }
+      sendWelcomeEmail(email, username)
+  .catch(e => console.error("Signup email failed:", e.message));
+
 
       req.flash("success", `Welcome ${username}!`);
       res.redirect("/listings");
@@ -61,11 +59,8 @@ module.exports.renderLoginForm = (req, res) => {
 module.exports.login = async (req, res) => {
   try {
     // ⚠️ optional email (can be removed in heavy traffic apps)
-    try {
-      await sendLoginEmail(req.user.email, req.user.username);
-    } catch (e) {
-      console.error("Login email failed:", e.message);
-    }
+  sendLoginEmail(req.user.email, req.user.username)
+  .catch(e => console.error("Login email failed:", e.message));
 
     req.flash("success", "Welcome back!");
 
@@ -141,11 +136,8 @@ module.exports.updateProfile = async (req, res) => {
       await user.changePassword(currentPassword, newPassword);
     }
 
-    try {
-      await sendProfileUpdateEmail(email, username);
-    } catch (e) {
-      console.error("Profile update email failed:", e.message);
-    }
+    sendProfileUpdateEmail(email, username)
+  .catch(e => console.error("Profile update email failed:", e.message));
 
     req.flash("success", "Profile updated successfully!");
     res.redirect("/users/my-profile");
