@@ -33,7 +33,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* STAT CARDS */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -86,7 +85,6 @@
       color: #aaa;
     }
 
-    /* SECTION */
     .section-title {
       font-size: 1rem;
       font-weight: 700;
@@ -286,7 +284,7 @@
               <tr>
                 <th>User</th>
                 <th>Role</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -312,14 +310,43 @@
                     </span>
                   </td>
                   <td>
-                    <% if(u.role !=='admin' ) { %>
-                      <form method="POST" action="/admin/users/<%= u._id %>?_method=DELETE"
-                        onsubmit="return confirm('Delete this user?')">
-                        <button class="del-btn">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                      </form>
-                      <% } %>
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+
+                      <!-- View Detail -->
+                      <a href="/admin/users/<%= u._id %>"
+                        style="background:#e3f2fd; color:#1565c0; border-radius:8px; padding:4px 10px; font-size:12px; font-weight:600; text-decoration:none;">
+                        <i class="fa-solid fa-eye"></i> View
+                      </a>
+
+                      <!-- Role Toggle (apne aap pe nahi dikhega) -->
+                      <% if (!u._id.equals(currUser._id)) { %>
+                        <form method="POST" action="/admin/users/<%= u._id %>/toggle-role?_method=PATCH"
+                          onsubmit="return confirm('Change role of @<%= u.username %>?')" style="display:inline;">
+                          <input type="hidden" name="redirectTo" value="/admin">
+                          <button type="submit" style="background:<%= u.role === 'admin' ? '#fff8e0' : '#e8f5e9' %>;
+                                   color:<%= u.role === 'admin' ? '#9a6c00' : '#2e7d32' %>;
+                                   border:none; border-radius:8px; padding:4px 10px;
+                                   font-size:12px; font-weight:600; cursor:pointer;">
+                            <% if (u.role==='admin' ) { %>
+                              <i class="fa-solid fa-arrow-down"></i> Make User
+                              <% } else { %>
+                                <i class="fa-solid fa-arrow-up"></i> Make Admin
+                                <% } %>
+                          </button>
+                        </form>
+                        <% } %>
+
+                          <!-- Delete (sirf non-admin users ka) -->
+                          <% if (u.role !=='admin' && !u._id.equals(currUser._id)) { %>
+                            <form method="POST" action="/admin/users/<%= u._id %>?_method=DELETE"
+                              onsubmit="return confirm('Delete this user?')" style="display:inline;">
+                              <button class="del-btn">
+                                <i class="fa-solid fa-trash"></i>
+                              </button>
+                            </form>
+                            <% } %>
+
+                    </div>
                   </td>
                 </tr>
                 <% }) %>
@@ -372,8 +399,12 @@
     </div>
 
     <!-- RECENT BOOKINGS -->
-    <div class="section-title">
-      <i class="fa-solid fa-receipt"></i> Recent Bookings
+    <div class="section-title" style="justify-content:space-between;">
+      <span><i class="fa-solid fa-receipt"></i> Recent Bookings</span>
+      <a href="/admin/bookings"
+        style="font-size:12px; font-weight:600; color:#fe424d; text-decoration:none; display:flex; align-items:center; gap:5px;">
+        View All <i class="fa-solid fa-arrow-right"></i>
+      </a>
     </div>
     <div class="admin-card">
       <table class="admin-table">

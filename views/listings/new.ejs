@@ -2,7 +2,7 @@
 
   <style>
     .new-wrapper {
-      max-width: 700px;
+      max-width: 760px;
       margin: 2.5rem auto 4rem auto;
       padding: 0 1rem;
     }
@@ -12,7 +12,7 @@
     }
 
     .new-header h3 {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #222;
       margin-bottom: 4px;
@@ -21,88 +21,6 @@
     .new-header p {
       color: #888;
       font-size: 14px;
-    }
-
-    .new-card {
-      background: white;
-      border-radius: 20px;
-      border: 1px solid #ebebeb;
-      padding: 2rem;
-      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-    }
-
-    .form-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #444;
-      margin-bottom: 6px;
-    }
-
-    .form-control {
-      border-radius: 10px !important;
-      border: 1px solid #e0e0e0 !important;
-      padding: 10px 14px !important;
-      font-size: 14px;
-      background: #fafafa;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .form-control:focus {
-      border-color: #fe424d !important;
-      box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1) !important;
-      background: white;
-      outline: none;
-    }
-
-    textarea.form-control {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .section-divider {
-      border: none;
-      border-top: 1px solid #f0f0f0;
-      margin: 1.5rem 0;
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #aaa;
-      margin: 0 0 1rem 0;
-    }
-
-    .input-group-text {
-      border-radius: 10px 0 0 10px !important;
-      border: 1px solid #e0e0e0 !important;
-      background: #f0f0f0;
-      color: #666;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .input-group .form-control {
-      border-radius: 0 10px 10px 0 !important;
-      border-left: none !important;
-    }
-
-    .add-btn {
-      width: 100%;
-      background: #fe424d !important;
-      color: white !important;
-      border: none !important;
-      border-radius: 10px !important;
-      padding: 13px !important;
-      font-size: 15px;
-      font-weight: 700;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .add-btn:hover {
-      background: #e0333e !important;
-      transform: scale(1.01);
     }
 
     .back-link {
@@ -120,10 +38,282 @@
       color: #222;
     }
 
-    .upload-hint {
+    /* Progress steps */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #bbb;
+    }
+
+    .step.active {
+      color: #fe424d;
+    }
+
+    .step.done {
+      color: #22c55e;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step.active .step-num {
+      background: #fe424d;
+      color: white;
+    }
+
+    .step.done .step-num {
+      background: #22c55e;
+      color: white;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: #ebebeb;
+      margin: 0 12px;
+    }
+
+    /* Cards */
+    .section-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-card-head .icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #fff0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #fe424d;
+      flex-shrink: 0;
+    }
+
+    .section-card-head h6 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+      margin: 0;
+    }
+
+    .section-card-head p {
       font-size: 12px;
       color: #aaa;
-      margin-top: 5px;
+      margin: 0;
+    }
+
+    /* Form elements */
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 10px !important;
+      border: 1px solid #e0e0e0 !important;
+      padding: 10px 14px !important;
+      font-size: 14px !important;
+      background: #fafafa !important;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: #222 !important;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #fe424d !important;
+      box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1) !important;
+      background: white !important;
+      outline: none !important;
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .input-group-text {
+      border-radius: 10px 0 0 10px !important;
+      border: 1px solid #e0e0e0 !important;
+      border-right: none !important;
+      background: #f0f0f0;
+      color: #666;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .input-group .form-control {
+      border-radius: 0 10px 10px 0 !important;
+      border-left: none !important;
+    }
+
+    /* Category chips */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .cat-chip input[type="radio"] {
+      display: none;
+    }
+
+    .cat-chip label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 6px;
+      border: 1.5px solid #ebebeb;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fafafa;
+    }
+
+    .cat-chip label i {
+      font-size: 20px;
+    }
+
+    .cat-chip input:checked+label {
+      border-color: #fe424d;
+      color: #fe424d;
+      background: #fff0f0;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed #e0e0e0;
+      border-radius: 14px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .upload-zone:hover {
+      border-color: #fe424d;
+      background: #fff8f8;
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      background: #fff0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px auto;
+      font-size: 20px;
+      color: #fe424d;
+    }
+
+    .upload-zone h6 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 4px;
+    }
+
+    .upload-zone p {
+      font-size: 12px;
+      color: #aaa;
+      margin: 0;
+    }
+
+    #preview-wrap {
+      display: none;
+      margin-top: 12px;
+    }
+
+    #preview-wrap img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #ebebeb;
+    }
+
+    /* Submit btn */
+    .submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 1.2rem;
+    }
+
+    .add-btn {
+      background: #fe424d;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 32px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .add-btn:hover {
+      background: #e0333e;
+    }
+
+    .hint-text {
+      font-size: 12px;
+      color: #aaa;
     }
   </style>
 
@@ -134,67 +324,138 @@
     </a>
 
     <div class="new-header">
-      <h3>Create a New Listing</h3>
+      <h3><i class="fa-solid fa-plus-circle me-2" style="color:#fe424d;"></i>Create a new listing</h3>
       <p>Share your space with travelers around the world</p>
     </div>
 
-    <div class="new-card">
-      <form method="post" action="/listings/" novalidate class="needs-validation" enctype="multipart/form-data">
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step active">
+        <div class="step-num">1</div>
+        <span>Basic info</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <span>Category & photo</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <span>Location & price</span>
+      </div>
+    </div>
 
-        <div class="section-label">Basic Info</div>
+    <form method="post" action="/listings/" novalidate class="needs-validation" enctype="multipart/form-data">
 
-        <div class="mb-3">
-          <label class="form-label">Title</label>
-          <input name="listing[title]" type="text" class="form-control"
-            placeholder="e.g. Cozy Mountain Cabin with Forest Views" required />
-          <div class="valid-feedback">Title looks good!</div>
-          <div class="invalid-feedback">Please enter a title</div>
+      <!-- BASIC INFO -->
+      <div class="section-card">
+        <div class="section-card-head">
+          <div class="icon"><i class="fa-solid fa-pen"></i></div>
+          <div>
+            <h6>Basic info</h6>
+            <p>Title and description of your place</p>
+          </div>
         </div>
 
         <div class="mb-3">
+          <label class="form-label">Listing title</label>
+          <input name="listing[title]" type="text" class="form-control"
+            placeholder="e.g. Cozy Mountain Cabin with Forest Views" required />
+          <div class="invalid-feedback">Please enter a title</div>
+        </div>
+
+        <div class="mb-0">
           <label class="form-label">Description</label>
           <textarea name="listing[description]" class="form-control"
             placeholder="Describe what makes your place special — amenities, vibe, nearby attractions..."
             required></textarea>
           <div class="invalid-feedback">Please enter a description</div>
         </div>
+      </div>
 
-        <div class="mb-3">
-          <label class="form-label">Category</label>
-          <select name="listing[category]" class="form-control" required>
-            <option value="" disabled selected>Select a category</option>
-            <% ["Trending","Rooms","Mountain","Camping","Farms"].forEach(cat=> { %>
-              <option value="<%= cat %>">
-                <%= cat %>
-              </option>
-              <% }) %>
-          </select>
-          <div class="invalid-feedback">Please select a category</div>
+      <!-- CATEGORY -->
+      <div class="section-card">
+        <div class="section-card-head">
+          <div class="icon"><i class="fa-solid fa-tags"></i></div>
+          <div>
+            <h6>Category</h6>
+            <p>Select the best fit for your listing</p>
+          </div>
         </div>
 
-        <hr class="section-divider" />
-        <div class="section-label">Listing Image</div>
+        <div class="cat-grid">
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat-trending" value="Trending" required />
+            <label for="cat-trending"><i class="fa-solid fa-fire"></i>Trending</label>
+          </div>
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat-rooms" value="Rooms" />
+            <label for="cat-rooms"><i class="fa-solid fa-bed"></i>Rooms</label>
+          </div>
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat-mountain" value="Mountain" />
+            <label for="cat-mountain"><i class="fa-solid fa-mountain"></i>Mountain</label>
+          </div>
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat-camping" value="Camping" />
+            <label for="cat-camping"><i class="fa-solid fa-campground"></i>Camping</label>
+          </div>
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat-farms" value="Farms" />
+            <label for="cat-farms"><i class="fa-solid fa-leaf"></i>Farms</label>
+          </div>
+        </div>
+        <div class="invalid-feedback d-block" id="cat-err" style="display:none !important;"></div>
+      </div>
 
-        <div class="mb-3">
-          <label class="form-label">Upload Photo</label>
-          <input name="listing[image]" type="file" class="form-control" accept="image/*" required />
-          <p class="upload-hint"><i class="fa-solid fa-circle-info me-1"></i>Max 5MB. JPG, PNG, WEBP accepted.</p>
-          <div class="invalid-feedback">Please upload an image</div>
+      <!-- PHOTO -->
+      <div class="section-card">
+        <div class="section-card-head">
+          <div class="icon"><i class="fa-solid fa-image"></i></div>
+          <div>
+            <h6>Listing photo</h6>
+            <p>Upload a high quality image (max 5MB)</p>
+          </div>
         </div>
 
-        <hr class="section-divider" />
-        <div class="section-label">Location & Pricing</div>
+        <div class="upload-zone" id="upload-zone">
+          <input name="listing[image]" type="file" accept="image/*" required id="photo-input" />
+          <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <h6>Click to upload or drag & drop</h6>
+          <p>JPG, PNG, WEBP · Max 5MB</p>
+        </div>
+
+        <div id="preview-wrap">
+          <img id="preview-img" src="" alt="Preview" />
+          <p style="font-size:12px;color:#aaa;margin-top:6px;text-align:center;">
+            <i class="fa-solid fa-check-circle" style="color:#22c55e;"></i> Photo selected — click zone to change
+          </p>
+        </div>
+
+        <div class="invalid-feedback">Please upload an image</div>
+      </div>
+
+      <!-- LOCATION & PRICE -->
+      <div class="section-card">
+        <div class="section-card-head">
+          <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <h6>Location & pricing</h6>
+            <p>Where is your place and how much per night?</p>
+          </div>
+        </div>
 
         <div class="row g-3 mb-3">
-          <div class="col-md-4">
-            <label class="form-label">Price / night</label>
+          <div class="col-md-5">
+            <label class="form-label">Price per night</label>
             <div class="input-group">
               <span class="input-group-text">₹</span>
-              <input name="listing[price]" type="number" class="form-control" placeholder="1200" required />
+              <input name="listing[price]" type="number" class="form-control" placeholder="1200" min="1" required />
             </div>
             <div class="invalid-feedback">Enter a valid price</div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <label class="form-label">Location</label>
             <input name="listing[location]" type="text" class="form-control" placeholder="e.g. Jaipur, Rajasthan"
               required />
@@ -202,19 +463,50 @@
           </div>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-0">
           <label class="form-label">Country</label>
           <input name="listing[country]" type="text" class="form-control" placeholder="e.g. India" required />
           <div class="invalid-feedback">Enter a valid country</div>
         </div>
+      </div>
 
-        <button class="btn add-btn">
-          <i class="fa-solid fa-plus me-2"></i> Create Listing
+      <!-- SUBMIT -->
+      <div class="submit-row">
+        <p class="hint-text"><i class="fa-solid fa-circle-info me-1"></i>All fields are required before publishing</p>
+        <button type="submit" class="add-btn">
+          <i class="fa-solid fa-paper-plane"></i> Publish listing
         </button>
+      </div>
 
-      </form>
-    </div>
-
+    </form>
   </div>
 
-  <script src="/js/script.js"></script>
+  <script>
+    // Image preview
+    document.getElementById('photo-input').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('preview-img').src = e.target.result;
+        document.getElementById('preview-wrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Steps highlight on scroll / fill
+    const stepEls = document.querySelectorAll('.step');
+    const cards = document.querySelectorAll('.section-card');
+
+    // Mark steps done progressively as user fills fields
+    document.querySelectorAll('.section-card:nth-child(1) input, .section-card:nth-child(1) textarea').forEach(el => {
+      el.addEventListener('input', () => {
+        const allFilled = [...document.querySelectorAll('[name="listing[title]"], [name="listing[description]"]')]
+          .every(i => i.value.trim());
+        if (allFilled) {
+          stepEls[0].classList.add('done');
+          stepEls[1].classList.add('active');
+        }
+      });
+    });
+  </script>

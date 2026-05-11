@@ -1,0 +1,289 @@
+<% layout("/layouts/boilerplate") %>
+
+  <style>
+    .bookings-wrapper {
+      max-width: 1100px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      margin: 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #fe424d;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .filter-tab {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid #ebebeb;
+      color: #555;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover {
+      border-color: #fe424d;
+      color: #fe424d;
+    }
+
+    .filter-tab.active {
+      background: #fe424d;
+      color: white;
+      border-color: #fe424d;
+    }
+
+    .admin-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-table th {
+      background: #fafafa;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #888;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .admin-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #333;
+      vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: #fafafa;
+    }
+
+    .status-pill {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pill-confirmed {
+      background: #e6f9f0;
+      color: #1a7a4a;
+    }
+
+    .pill-pending {
+      background: #fff8e0;
+      color: #9a6c00;
+    }
+
+    .pill-cancelled {
+      background: #fce4e4;
+      color: #c62828;
+    }
+
+    .pill-failed {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .status-select {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    .btn-update {
+      background: #fe424d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-update:hover {
+      background: #e63940;
+    }
+
+    .user-link {
+      color: #fe424d;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .user-link:hover {
+      text-decoration: underline;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .total-count {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+  </style>
+
+  <div class="bookings-wrapper">
+
+    <div class="page-header">
+      <h2><i class="fa-solid fa-receipt me-2" style="color:#fe424d;"></i>All Bookings</h2>
+      <a href="/admin" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <a href="/admin/bookings" class="filter-tab <%= currentFilter === 'all' ? 'active' : '' %>">All</a>
+      <a href="/admin/bookings?status=confirmed"
+        class="filter-tab <%= currentFilter === 'confirmed' ? 'active' : '' %>">Confirmed</a>
+      <a href="/admin/bookings?status=pending"
+        class="filter-tab <%= currentFilter === 'pending' ? 'active' : '' %>">Pending</a>
+      <a href="/admin/bookings?status=cancelled"
+        class="filter-tab <%= currentFilter === 'cancelled' ? 'active' : '' %>">Cancelled</a>
+      <a href="/admin/bookings?status=failed"
+        class="filter-tab <%= currentFilter === 'failed' ? 'active' : '' %>">Failed</a>
+    </div>
+
+    <div class="total-count">
+      Showing <strong>
+        <%= bookings.length %>
+      </strong> booking<%= bookings.length !==1 ? 's' : '' %>
+        <% if (currentFilter !=='all' ) { %> · Filter: <strong>
+            <%= currentFilter %>
+          </strong>
+          <% } %>
+    </div>
+
+    <div class="admin-card">
+      <% if (bookings.length===0) { %>
+        <div class="empty-state">
+          <i class="fa-solid fa-calendar-xmark" style="font-size:28px; margin-bottom:10px; display:block;"></i>
+          No bookings found<% if(currentFilter !=='all' ) { %> with status "<%= currentFilter %>"<% } %>.
+        </div>
+        <% } else { %>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Listing</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Nights</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Update Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach(b=> { %>
+                <tr>
+                  <td>
+                    <a href="/admin/users/<%= b.user?._id %>" class="user-link">
+                      @<%= b.user?.username || "N/A" %>
+                    </a>
+                    <div style="font-size:11px; color:#aaa;">
+                      <%= b.user?.email || "" %>
+                    </div>
+                  </td>
+                  <td
+                    style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600;">
+                    <%= b.listing?.title || "N/A" %>
+                  </td>
+                  <td style="font-size:12px; color:#666;">
+                    <%= b.checkIn.toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) %>
+                  </td>
+                  <td style="font-size:12px; color:#666;">
+                    <%= b.checkOut.toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) %>
+                  </td>
+                  <td>
+                    <%= b.nights %>
+                  </td>
+                  <td style="font-weight:600;">₹<%= b.totalAmount.toLocaleString("en-IN") %>
+                  </td>
+                  <td>
+                    <span class="status-pill pill-<%= b.status %>">
+                      <%= b.status %>
+                    </span>
+                  </td>
+                  <td>
+                    <form method="POST" action="/admin/bookings/<%= b._id %>/status?_method=PATCH"
+                      style="display:inline;">
+                      <input type="hidden" name="redirectTo"
+                        value="/admin/bookings<%= currentFilter !== 'all' ? '?status='+currentFilter : '' %>">
+                      <select name="status" class="status-select">
+                        <option value="pending" <%=b.status==='pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="confirmed" <%=b.status==='confirmed' ? 'selected' : '' %>>Confirmed</option>
+                        <option value="cancelled" <%=b.status==='cancelled' ? 'selected' : '' %>>Cancelled</option>
+                        <option value="failed" <%=b.status==='failed' ? 'selected' : '' %>>Failed</option>
+                      </select>
+                      <button type="submit" class="btn-update">Save</button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <% } %>
+    </div>
+
+  </div>

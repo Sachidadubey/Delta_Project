@@ -1,0 +1,407 @@
+<% layout("/layouts/boilerplate") %>
+
+  <style>
+    .detail-wrapper {
+      max-width: 960px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #fe424d;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .big-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fe424d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .profile-info h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .profile-info p {
+      font-size: 13px;
+      color: #888;
+      margin: 0;
+    }
+
+    .role-badge {
+      margin-left: auto;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fff0f0;
+      color: #fe424d;
+    }
+
+    .role-badge.admin-role {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      color: #aaa;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .meta-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #222;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: #fe424d;
+    }
+
+    .admin-card {
+      background: white;
+      border: 1px solid #ebebeb;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-table th {
+      background: #fafafa;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #888;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .admin-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #333;
+      vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: #fafafa;
+    }
+
+    .status-pill {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pill-confirmed {
+      background: #e6f9f0;
+      color: #1a7a4a;
+    }
+
+    .pill-pending {
+      background: #fff8e0;
+      color: #9a6c00;
+    }
+
+    .pill-cancelled {
+      background: #fce4e4;
+      color: #c62828;
+    }
+
+    .pill-failed {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .action-form {
+      display: inline;
+    }
+
+    .status-select {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    .btn-update {
+      background: #fe424d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-update:hover {
+      background: #e63940;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid #ffcdd2;
+      color: #e53935;
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    .btn-cancel:hover {
+      background: #fff5f5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #aaa;
+      font-size: 13px;
+    }
+  </style>
+
+  <div class="detail-wrapper">
+
+    <a href="/admin" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="big-avatar">
+        <%= user.username[0].toUpperCase() %>
+      </div>
+      <div class="profile-info">
+        <h3>@<%= user.username %>
+        </h3>
+        <p><i class="fa-solid fa-envelope me-1"></i>
+          <%= user.email %>
+        </p>
+        <p style="margin-top:4px; font-size:12px; color:#bbb;">
+          Joined: <%= user.createdAt.toLocaleDateString("en-IN", { day:"numeric", month:"long", year:"numeric" }) %>
+        </p>
+      </div>
+      <span class="role-badge <%= user.role === 'admin' ? 'admin-role' : '' %>">
+        <i class="fa-solid fa-<%= user.role === 'admin' ? 'shield-halved' : 'user' %> me-1"></i>
+        <%= user.role %>
+      </span>
+    </div>
+
+    <!-- META STATS -->
+    <div class="meta-grid">
+      <div class="meta-card">
+        <div class="meta-label">Total Bookings</div>
+        <div class="meta-value">
+          <%= bookings.length %>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Confirmed</div>
+        <div class="meta-value" style="color:#1a7a4a;">
+          <%= bookings.filter(b=> b.status === 'confirmed').length %>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Cancelled</div>
+        <div class="meta-value" style="color:#c62828;">
+          <%= bookings.filter(b=> b.status === 'cancelled').length %>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Total Spent</div>
+        <div class="meta-value">
+          ₹<%= bookings.filter(b=>b.status==='confirmed').reduce((s,b)=>s+b.totalAmount,0).toLocaleString("en-IN") %>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Listings Owned</div>
+        <div class="meta-value">
+          <%= listings.length %>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS TABLE -->
+    <div class="section-title">
+      <i class="fa-solid fa-receipt"></i> Booking History
+    </div>
+    <div class="admin-card">
+      <% if (bookings.length===0) { %>
+        <div class="empty-state">
+          <i class="fa-solid fa-calendar-xmark" style="font-size:24px; margin-bottom:8px; display:block;"></i>
+          No bookings found for this user.
+        </div>
+        <% } else { %>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Listing</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Nights</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Update Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach(b=> { %>
+                <tr>
+                  <td
+                    style="font-weight:600; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    <%= b.listing?.title || "N/A" %>
+                  </td>
+                  <td>
+                    <%= b.checkIn.toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) %>
+                  </td>
+                  <td>
+                    <%= b.checkOut.toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) %>
+                  </td>
+                  <td>
+                    <%= b.nights %>
+                  </td>
+                  <td style="font-weight:600;">₹<%= b.totalAmount.toLocaleString("en-IN") %>
+                  </td>
+                  <td>
+                    <span class="status-pill pill-<%= b.status %>">
+                      <%= b.status %>
+                    </span>
+                  </td>
+                  <td>
+                    <!-- Status Update Form -->
+                    <form method="POST" action="/admin/bookings/<%= b._id %>/status?_method=PATCH" class="action-form">
+                      <input type="hidden" name="redirectTo" value="/admin/users/<%= user._id %>">
+                      <select name="status" class="status-select">
+                        <option value="pending" <%=b.status==='pending' ? 'selected' :'' %>>Pending</option>
+                        <option value="confirmed" <%=b.status==='confirmed' ? 'selected' :'' %>>Confirmed</option>
+                        <option value="cancelled" <%=b.status==='cancelled' ? 'selected' :'' %>>Cancelled</option>
+                        <option value="failed" <%=b.status==='failed' ? 'selected' :'' %>>Failed</option>
+                      </select>
+                      <button type="submit" class="btn-update">Update</button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <% } %>
+    </div>
+
+    <!-- LISTINGS TABLE -->
+    <% if (listings.length> 0) { %>
+      <div class="section-title">
+        <i class="fa-solid fa-house"></i> Listings by this User
+      </div>
+      <div class="admin-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Price/Night</th>
+              <th>Created</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% listings.forEach(l=> { %>
+              <tr>
+                <td style="font-weight:600;">
+                  <%= l.title %>
+                </td>
+                <td>₹<%= l.price.toLocaleString("en-IN") %>
+                </td>
+                <td style="color:#888; font-size:12px;">
+                  <%= l.createdAt.toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) %>
+                </td>
+                <td>
+                  <form method="POST" action="/admin/listings/<%= l._id %>?_method=DELETE"
+                    onsubmit="return confirm('Delete this listing?')">
+                    <button class="btn-cancel"><i class="fa-solid fa-trash"></i> Delete</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% } %>
+
+  </div>
