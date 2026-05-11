@@ -6,9 +6,37 @@
 
 ## 🔗 Live Demo
 
-** https://major-project-tt4c.onrender.com**
+**🌐 https://major-project-tt4c.onrender.com**
 
 > Test credentials — Email: `demo@wanderlust.com` / Password: `demo1234`
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Home — Listings Grid
+
+![Home](screenshots/home.png)
+
+### 🏡 Listing Detail — Map + Booking + Reviews
+
+![Listing Detail](screenshots/listing-detail.png)
+
+### 💳 Booking Management — Admin All Bookings
+
+![All Bookings](screenshots/all-bookings.png)
+
+### 🛡️ Admin Dashboard — Stats, Users, Listings
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### 👤 User Profile
+
+![User Profile](screenshots/profile.png)
+
+### ➕ Create New Listing
+
+![New Listing](screenshots/new-listing.png)
 
 ---
 
@@ -43,8 +71,7 @@ Wanderlust is a full-stack web application that allows users to discover travel 
 
 - Users select **check-in / check-out dates**; nights and total price auto-calculated
 - **Razorpay** order created server-side → Razorpay checkout popup triggered on frontend
-- Payment verified server-side using **HMAC-SHA256 signature**:
-
+- Payment verified server-side using **HMAC-SHA256 signature**
 - Booking status transitions: `pending → confirmed` (on success) or `failed` (on mismatch)
 - Full **My Bookings** dashboard with booking history
 
@@ -70,9 +97,11 @@ Wanderlust is a full-stack web application that allows users to discover travel 
 - Role-based access control — `admin` vs `user` roles on User model
 - Dedicated `/admin` route protected by `isAdmin` middleware
 - Live stats — total users, listings, bookings, confirmed/pending counts and revenue
-- Recent users table with one-click delete (admins protected from deletion)
-- Recent listings table with one-click delete
-- Recent bookings overview with status pills
+- **User detail page** — full profile, booking history, owned listings per user
+- **All Bookings page** — filter by status (confirmed/pending/cancelled/failed)
+- **Booking status update** — change any booking status via dropdown
+- **Role toggle** — promote any user to admin or demote to user, one click
+- One-click delete for users and listings (admins protected)
 - Admin link auto-appears in navbar only for admin accounts
 
 ### 🔒 Security
@@ -86,6 +115,7 @@ Wanderlust is a full-stack web application that allows users to discover travel 
 
 ## 🏗️ Architecture
 
+```
 Client (EJS + Vanilla JS)
 ↓
 Routes (Express Router)
@@ -95,21 +125,24 @@ Controllers (Business Logic)
 Models (Mongoose)
 ↓
 Database (MongoDB Atlas)
+```
 
 ### Folder Structure
 
+```
 wanderlust/
-├── controllers/ # Route handlers — listings, users, bookings, reviews, admin
-├── models/ # Mongoose schemas — Listing, User, Booking, Review
-├── routes/ # Express routers
-├── views/ # EJS templates
-│ └── layouts/ # Base layout with nav, flash messages
-├── public/ # Static assets (CSS, JS, icons)
-├── utils/ # Error handler, wrapAsync, email helper
-├── middleware.js # isLoggedIn, isOwner, isAdmin, validateListing
+├── controllers/   # Route handlers — listings, users, bookings, reviews, admin
+├── models/        # Mongoose schemas — Listing, User, Booking, Review
+├── routes/        # Express routers
+├── views/         # EJS templates
+│   └── layouts/   # Base layout with nav, flash messages
+├── public/        # Static assets (CSS, JS, icons)
+├── utils/         # Error handler, wrapAsync, email helper
+├── middleware.js  # isLoggedIn, isOwner, isAdmin, validateListing
 ├── cloudConfig.js # Cloudinary + Multer setup
-├── app.js # Express app config, middleware stack
-└── .env # Environment secrets (never committed)
+├── app.js         # Express app config, middleware stack
+└── .env           # Environment secrets (never committed)
+```
 
 ---
 
@@ -117,6 +150,7 @@ wanderlust/
 
 ### Payment Flow (Razorpay Integration)
 
+```
 User clicks "Book & Pay"
 ↓
 POST /listings/:id/create-order
@@ -136,9 +170,11 @@ HMAC signature verification (server-side)
 Booking status → "confirmed" + paymentId saved
 ↓
 Confirmation email sent → Redirect /my-bookings
+```
 
 ### Auth Flow (Passport.js)
 
+```
 POST /users/signup
 ↓
 User.register() → password auto-hashed (passport-local-mongoose)
@@ -146,6 +182,7 @@ User.register() → password auto-hashed (passport-local-mongoose)
 req.login() → session created → stored in MongoDB
 ↓
 Welcome email triggered → Redirect
+```
 
 ---
 
@@ -254,11 +291,15 @@ App runs at: `http://localhost:8080`
 
 ### Admin
 
-| Method | Route                 | Description               | Auth Required |
-| ------ | --------------------- | ------------------------- | ------------- |
-| GET    | `/admin`              | Dashboard with live stats | ✅ Admin only |
-| DELETE | `/admin/users/:id`    | Delete a user             | ✅ Admin only |
-| DELETE | `/admin/listings/:id` | Delete any listing        | ✅ Admin only |
+| Method | Route                          | Description                     | Auth Required |
+| ------ | ------------------------------ | ------------------------------- | ------------- |
+| GET    | `/admin`                       | Dashboard with live stats       | ✅ Admin only |
+| GET    | `/admin/users/:id`             | User detail + booking history   | ✅ Admin only |
+| PATCH  | `/admin/users/:id/toggle-role` | Promote/demote user role        | ✅ Admin only |
+| DELETE | `/admin/users/:id`             | Delete a user                   | ✅ Admin only |
+| GET    | `/admin/bookings`              | All bookings with status filter | ✅ Admin only |
+| PATCH  | `/admin/bookings/:id/status`   | Update booking status           | ✅ Admin only |
+| DELETE | `/admin/listings/:id`          | Delete any listing              | ✅ Admin only |
 
 ---
 
@@ -297,7 +338,7 @@ Deployed on **Render** (web service).
 
 ## 👨‍💻 Author
 
-**Sachida dhar dubey**
+**Sachida Dhar Dubey**
 Final Year B.Tech CSE | Aspiring Backend Developer
 📍 India | Open to Backend / MERN Stack roles
 
