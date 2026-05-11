@@ -20,8 +20,7 @@
 
 ### 🏡 Listing Detail — Map + Booking + Reviews
 
-![Listing Detail](Delta_Project
-/screenshots/listing-detail.png)
+![Listing Detail](screenshots/listing-detail.png)
 
 ### 💳 Booking Management — Admin All Bookings
 
